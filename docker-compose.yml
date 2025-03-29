@@ -8,9 +8,10 @@ services:
       - ./user-service:/usr/src/app
       - /usr/src/app/node_modules
     environment:
-      MONGO_URI: "mongodb://user-db:27017/userdb"
+      MONGO_URI: "mongodb://user-db:27017/users"
       REDIS_HOST: "user-redis"
       REDIS_PORT: "6379"
+      JWT_SECRET: "ecommerce_backend"
     depends_on:
       - user-db
       - user-redis
@@ -20,8 +21,6 @@ services:
   user-db:
     image: mongo
     container_name: user-db
-    ports:
-      - "27017:27017"
     volumes:
       - user-data:/data/db
     networks:
