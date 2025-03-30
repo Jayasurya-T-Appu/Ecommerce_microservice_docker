@@ -29,12 +29,10 @@ services:
   user-redis:
     image: redis:latest
     container_name: user-redis
-    ports:
-      - "6379:6379"
     networks:
       - backend
     volumes:
-      - redis-data:/data
+      - redis-user-data:/data
   
   nginx:
     image: nginx:latest
@@ -47,10 +45,43 @@ services:
       - user-service
     networks:
       - backend
+  product-service:
+    build: './product-service'
+    container_name: product-service
+    volumes:
+      - ./product-service:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      MONGO_URI: "mongodb://product-db:27017/products"
+      REDIS_HOST: "product-redis"
+      JWT_SECRET: "ecommerce_backend"
+    depends_on:
+      - product-db
+      - product-redis
+    networks:
+      - backend
+  product-db:
+    image: mongo
+    container_name: product-db
+    volumes:
+      - product-data:/data/db
+    networks:
+      - backend
+  product-redis:
+    image: redis:latest
+    container_name: product-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+    volumes:
+      - redis-product-data:/data
 
 networks:
   backend:
 
 volumes:
   user-data:
-  redis-data:
+  redis-user-data:
+  product-data:
+  redis-product-data:
