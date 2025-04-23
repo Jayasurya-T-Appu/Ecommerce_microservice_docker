@@ -12,6 +12,7 @@ services:
       REDIS_HOST: "user-redis"
       REDIS_PORT: "6379"
       JWT_SECRET: "ecommerce_backend"
+      PORT: 3002
     depends_on:
       - user-db
       - user-redis
@@ -54,7 +55,9 @@ services:
     environment:
       MONGO_URI: "mongodb://product-db:27017/products"
       REDIS_HOST: "product-redis"
+      REDIS_PORT: "6379"
       JWT_SECRET: "ecommerce_backend"
+      PORT: 3002
     depends_on:
       - product-db
       - product-redis

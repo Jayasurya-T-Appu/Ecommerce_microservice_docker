@@ -1,4 +1,5 @@
 const User = require("../models/user.model")
+const redisClient = require('../config/redisClient')
 
 class UserError extends Error {
     constructor(message, statusCode) {
@@ -8,7 +9,6 @@ class UserError extends Error {
 }
 
 exports.registerUser = async (userData) => {
-
     const existingUser = await User.findOne({ email: userData.email })
     if (existingUser) throw new UserError( 'User already exist', 409 )
 
@@ -32,8 +32,16 @@ exports.loginUser = async({ email, password }) => {
 
 exports.getUserById = async(userId) => {
     if (!userId) throw new Error('User ID is required');
+
+    const cachedUser = await redisClient.get(`user:${userId}`)
+
+    if (cachedUser) return JSON.parse(cachedUser)
+
     const user = await User.findById(userId).select('-password') // select all fields except password
     if(!user) throw new UserError( 'User not found', 404 )
+
+    await redisClient.set(`user:${userId}`, JSON.stringify(user))
+
     return user
 }
 

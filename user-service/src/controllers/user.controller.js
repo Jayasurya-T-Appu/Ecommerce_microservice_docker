@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const token = await userService.loginUser(req.body)
-        res.json({
+        res.status(201).json({
             message: "User logged in successfully",
             token
         })
