@@ -1,22 +1,26 @@
 const userService = require("../services/user.service")
 
+// Controller to handle user registration
 exports.register = async (req, res) => {
     try {
+        // Call service to register user and generate token
         const token = await userService.registerUser(req.body)
         res.status(201).json({
             message: "User registered successfully",
             token
         })
-    }
-    catch (error) {
+    } catch (error) {
+        // Handle known or generic errors
         res.status(error.statusCode || 400).json({
             error: error.message
         })
     }
 }
 
+// Controller to handle user login
 exports.login = async (req, res) => {
     try {
+        // Authenticate user and return token
         const token = await userService.loginUser(req.body)
         res.status(201).json({
             message: "User logged in successfully",
@@ -29,8 +33,10 @@ exports.login = async (req, res) => {
     }
 }
 
+// Get the current authenticated user's data
 exports.getUser = async (req, res) => {
     try {
+        // Fetch user using ID from auth middleware
         const user = await userService.getUserById(req.user.id)
         res.json(user)
     } catch (error) {
@@ -38,7 +44,8 @@ exports.getUser = async (req, res) => {
     }
 }
 
-exports.updateUser = async (req, res) =>{
+// Update user details
+exports.updateUser = async (req, res) => {
     try {
         const updatedUser = await userService.updateUser(req.user.id, req.body)
         res.json({ message: 'User updated successfully', user: updatedUser });
@@ -47,7 +54,8 @@ exports.updateUser = async (req, res) =>{
     }
 }
 
-exports.addAddress = async (req, res)=>{
+// Add a new address to the user's address list
+exports.addAddress = async (req, res) => {
     try {
         const userId = req.user.id
         const address = req.body
@@ -62,7 +70,8 @@ exports.addAddress = async (req, res)=>{
     }
 }
 
-exports.updateAddress = async(req, res) =>{
+// Update an existing address by address ID
+exports.updateAddress = async (req, res) => {
     try {
         const userId = req.user.id
         const addressId = req.params.addressId
@@ -77,7 +86,8 @@ exports.updateAddress = async(req, res) =>{
     }
 }
 
-exports.deleteAddress = async(req, res) =>{
+// Delete an address by its ID
+exports.deleteAddress = async (req, res) => {
     try {
         const userId = req.user.id
         const addressId = req.params.addressId

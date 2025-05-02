@@ -30,5 +30,13 @@ const productSchema = Joi.object({
     updatedAt: Joi.date().optional()
   })
 
-  module.exports = {productSchema};
+const flexibleProductSchema = Joi.alternatives().try(
+    productSchema,
+    Joi.array().items(productSchema).min(1)
+)
+const paramIdSchema = Joi.object({
+    id: Joi.string().custom(objectId).required()
+  });
+
+module.exports = {flexibleProductSchema, paramIdSchema};
   
