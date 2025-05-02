@@ -1,5 +1,5 @@
 {
-  "name": "product-service",
+  "name": "order-service",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -14,13 +14,10 @@
     "@grpc/grpc-js": "^1.13.3",
     "@grpc/proto-loader": "^0.7.15",
     "cors": "^2.8.5",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "helmet": "^8.1.0",
-    "ioredis": "^5.6.0",
     "joi": "^17.13.3",
-    "mongoose": "^8.13.1",
-    "nodemon": "^3.1.9",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "mongoose": "^8.14.1",
+    "nodemon": "^3.1.10"
   }
 }
